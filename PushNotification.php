@@ -8,48 +8,46 @@
  */
 class PushNotification extends CApplicationComponent {
 
-	const TRANSPORT_TYPE_IOS = 'ios';
-	const TRANSPORT_TYPE_ANDROID = 'android';
-
-	public function init() {
-		parent::init();
-	}
-
 	/**
-	 * @param string      $apnsCertificateFilePath
+	 * @param string|null $apnsCertificateFilePath
 	 * @param string|null $serviceUrl
 	 *
-	 * @return IosPushNotificationTransport
+	 * @return PNIosTransport
 	 */
-	public function createIosTransport($apnsCertificateFilePath, $serviceUrl = null) {
-		return new IosPushNotificationTransport($apnsCertificateFilePath, $serviceUrl);
+	public function createIosTransport($apnsCertificateFilePath = null, $serviceUrl = null) {
+		$transport = new PNIosTransport($serviceUrl);
+		if ($apnsCertificateFilePath) {
+			$transport->setApnsCertificateFile($apnsCertificateFilePath);
+		}
+		return $transport;
 	}
 
 	/**
 	 * @param string|null $message
 	 *
-	 * @return PushNotificationIosPayload
+	 * @return PNIosPayload
 	 */
 	public function createIosPayload($message = null) {
-		return new PushNotificationIosPayload($this, $message);
+		return new PNIosPayload($message);
 	}
 
 	/**
-	 * @param string      $apiKey
+	 * @param string|null $apiKey
 	 * @param string|null $serviceUrl
 	 *
-	 * @return AndroidPushNotificationTransport
+	 * @return PNAndroidTransport
 	 */
-	public function createAndroidTransport($apiKey, $serviceUrl = null) {
-		return new AndroidPushNotificationTransport($apiKey, $serviceUrl);
+	public function createAndroidTransport($apiKey = null, $serviceUrl = null) {
+		$transport = new PNAndroidTransport($serviceUrl);
+		return $transport->setApiKey($apiKey);
 	}
 
 	/**
 	 * @param string|null $message
 	 *
-	 * @return PushNotificationAndroidPayload
+	 * @return PNAndroidPayload
 	 */
 	public function createAndroidPayload($message = null) {
-		return new PushNotificationAndroidPayload($this, $message);
+		return new PNAndroidPayload($message);
 	}
 }

@@ -1,18 +1,10 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: once
- * Date: 10/18/13
- * Time: 4:06 PM
- * To change this template use File | Settings | File Templates.
- */
-
-class PushNotificationIosPayload extends APushNotificationPayload {
+class PNIosPayload extends APNPayload {
 
 	/**
 	 * @param string $message
 	 *
-	 * @return PushNotificationIosPayload
+	 * @return PNIosPayload
 	 */
 	public function setMessage($message) {
 		if (is_string($message)) {
@@ -22,11 +14,20 @@ class PushNotificationIosPayload extends APushNotificationPayload {
 	}
 
 	/**
+	 * @param string|null $serviceUrl
+	 *
+	 * @return PNIosTransport
+	 */
+	public function createTransport($serviceUrl = null) {
+		return new PNIosTransport($serviceUrl);
+	}
+
+	/**
 	 * Sound key
 	 *
 	 * @param string $sound
 	 *
-	 * @return PushNotificationIosPayload
+	 * @return PNIosPayload
 	 */
 	public function setSound($sound) {
 		if (is_string($sound)) {

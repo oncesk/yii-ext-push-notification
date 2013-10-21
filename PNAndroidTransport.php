@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: once
- * Date: 10/18/13
- * Time: 3:17 PM
- * To change this template use File | Settings | File Templates.
- */
-
-class AndroidPushNotificationTransport extends APushNotificationTransport {
+class PNAndroidTransport extends APNTransport {
 
 	/**
 	 * @var string
@@ -20,23 +12,35 @@ class AndroidPushNotificationTransport extends APushNotificationTransport {
 	protected $_serviceUrl;
 
 	/**
-	 * @param string $apiKey
 	 * @param string $serviceUrl
 	 */
-	public function __construct($apiKey, $serviceUrl = 'https://android.googleapis.com/gcm/send') {
-		$this->setServiceUrl($serviceUrl);
-		$this->_apiKey = $apiKey;
+	public function __construct($serviceUrl = 'https://android.googleapis.com/gcm/send') {
+		if ($serviceUrl) {
+			parent::__construct($serviceUrl);
+		}
 	}
 
 	/**
-	 * @param PushNotificationAndroidPayload $payload
+	 * @param string $apiKey
+	 *
+	 * @return PNAndroidTransport
+	 */
+	public function setApiKey($apiKey) {
+		if (is_string($apiKey)) {
+			$this->_apiKey = $apiKey;
+		}
+		return $this;
+	}
+
+	/**
+	 * @param PNAndroidPayload $payload
 	 *
 	 * @return mixed|void
 	 * @throws CException
 	 */
 	public function send($payload) {
-		if (!($payload instanceof PushNotificationAndroidPayload)) {
-			throw new CException('Invalid payload: payload must implements from PushNotificationAndroidPayload');
+		if (!($payload instanceof PNAndroidPayload)) {
+			throw new CException('Invalid payload: payload must implements from PNAndroidPayload');
 		}
 
 		$androidPayload = $payload->getPayload();
@@ -52,10 +56,10 @@ class AndroidPushNotificationTransport extends APushNotificationTransport {
 	/**
 	 * @param null $message
 	 *
-	 * @return PushNotificationAndroidPayload
+	 * @return PNAndroidPayload
 	 */
 	public function createPayload($message = null) {
-		return new PushNotificationAndroidPayload($message);
+		return new PNAndroidPayload($message);
 	}
 
 

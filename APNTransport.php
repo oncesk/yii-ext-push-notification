@@ -6,7 +6,7 @@
  * Time: 3:06 PM
  * To change this template use File | Settings | File Templates.
  */
-abstract class APushNotificationTransport {
+abstract class APNTransport {
 
 	/**
 	 * @var string
@@ -14,7 +14,7 @@ abstract class APushNotificationTransport {
 	protected $_serviceUrl;
 
 	/**
-	 * @param APushNotificationPayload $payload
+	 * @param APNPayload $payload
 	 *
 	 * @return mixed
 	 */
@@ -23,14 +23,21 @@ abstract class APushNotificationTransport {
 	/**
 	 * @param null $message
 	 *
-	 * @return APushNotificationPayload
+	 * @return APNPayload
 	 */
 	abstract public function createPayload($message = null);
 
 	/**
+	 * @param string $serviceUrl
+	 */
+	public function __construct($serviceUrl) {
+		$this->setServiceUrl($serviceUrl);
+	}
+
+	/**
 	 * @param string $url
 	 *
-	 * @return APushNotificationTransport
+	 * @return APNTransport
 	 */
 	public function setServiceUrl($url) {
 		if (is_string($url)) {

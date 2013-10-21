@@ -1,24 +1,25 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: once
- * Date: 10/18/13
- * Time: 4:02 PM
- * To change this template use File | Settings | File Templates.
- */
-
-class PushNotificationAndroidPayload extends APushNotificationPayload {
+class PNAndroidPayload extends APNPayload {
 
 	/**
 	 * @param string $message
 	 *
-	 * @return PushNotificationAndroidPayload
+	 * @return PNAndroidPayload
 	 */
 	public function setMessage($message) {
 		if (is_string($message)) {
 			$this->_payload['data']['message'] = $message;
 		}
 		return $this;
+	}
+
+	/**
+	 * @param string|null $serviceUrl
+	 *
+	 * @return PNAndroidTransport
+	 */
+	public function createTransport($serviceUrl = null) {
+		return new PNAndroidTransport($serviceUrl);
 	}
 
 	/**

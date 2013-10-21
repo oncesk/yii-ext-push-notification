@@ -6,12 +6,7 @@
  * Time: 4:01 PM
  * To change this template use File | Settings | File Templates.
  */
-abstract class APushNotificationPayload {
-
-	/**
-	 * @var PushNotificationManager
-	 */
-	protected $_manager;
+abstract class APNPayload {
 
 	/**
 	 * @var array
@@ -31,16 +26,21 @@ abstract class APushNotificationPayload {
 	/**
 	 * @param string $message
 	 *
-	 * @return APushNotificationPayload
+	 * @return APNPayload
 	 */
 	abstract public function setMessage($message);
 
 	/**
-	 * @param PushNotificationManager $manager
+	 * @param string|null $serviceUrl
+	 *
+	 * @return APNTransport
+	 */
+	abstract public function createTransport($serviceUrl = null);
+
+	/**
 	 * @param null                    $message
 	 */
-	public function __construct(PushNotificationManager $manager, $message = null) {
-		$this->_manager = $manager;
+	public function __construct($message = null) {
 		$this->init();
 		if ($message) {
 			$this->setMessage($message);
@@ -50,7 +50,7 @@ abstract class APushNotificationPayload {
 	/**
 	 * @param string|array $token
 	 *
-	 * @return APushNotificationPayload
+	 * @return APNPayload
 	 */
 	public function setRecipientToken($token) {
 		if (is_string($token) && is_numeric($token)) {

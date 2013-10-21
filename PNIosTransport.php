@@ -6,7 +6,7 @@
  * Time: 3:08 PM
  * To change this template use File | Settings | File Templates.
  */
-class IosPushNotificationTransport extends APushNotificationTransport {
+class PNIosTransport extends APNTransport {
 
 	/**
 	 * @var bool
@@ -31,17 +31,28 @@ class IosPushNotificationTransport extends APushNotificationTransport {
 	protected $_apnsCertificateFilePath;
 
 	/**
-	 * @param string $apnsCertificateFilePath
 	 * @param string $serviceUrl
 	 *
 	 * @throws CException
 	 */
-	public function __construct($apnsCertificateFilePath, $serviceUrl = 'ssl://gateway.push.apple.com:2195') {
-		if (!$apnsCertificateFilePath || !file_exists($apnsCertificateFilePath)) {
-			throw new CException('Ios certificate file \'' . $apnsCertificateFilePath . '\' does not exists');
+	public function __construct($serviceUrl = 'ssl://gateway.push.apple.com:2195') {
+		if ($serviceUrl) {
+			parent::__construct($serviceUrl);
 		}
-		$this->_apnsCertificateFilePath = $apnsCertificateFilePath;
-		$this->setServiceUrl($serviceUrl);
+	}
+
+	/**
+	 * @param string $apnsCertificateFile path to certificate file
+	 *
+	 * @return PNIosTransport
+	 * @throws CException
+	 */
+	public function setApnsCertificateFile($apnsCertificateFile) {
+		if (!$apnsCertificateFile || !file_exists($apnsCertificateFile)) {
+			throw new CException('Ios certificate file \'' . $apnsCertificateFile . '\' does not exists');
+		}
+		$this->_apnsCertificateFilePath = $apnsCertificateFile;
+		return $this;
 	}
 
 	/**
@@ -57,14 +68,14 @@ class IosPushNotificationTransport extends APushNotificationTransport {
 	}
 
 	/**
-	 * @param PushNotificationIosPayload $payload
+	 * @param PNIosPayload $payload
 	 *
 	 * @return mixed|void
 	 * @throws CException
 	 */
 	public function send($payload) {
-		if (!($payload instanceof APushNotificationPayload)) {
-			throw new CException('Invalid payload: payload must implements from PushNotificationIosPayload');
+		if (!($payload instanceof APNPayload)) {
+			throw new CException('Invalid payload: payload must implements from PNIosPayload');
 		}
 
 		$this
@@ -84,10 +95,10 @@ class IosPushNotificationTransport extends APushNotificationTransport {
 	/**
 	 * @param null $message
 	 *
-	 * @return PushNotificationIosPayload
+	 * @return PNIosPayload
 	 */
 	public function createPayload($message = null) {
-		return new PushNotificationIosPayload($message);
+		return new PNIosPayload($message);
 	}
 
 
@@ -106,7 +117,7 @@ class IosPushNotificationTransport extends APushNotificationTransport {
 	/**
 	 * Create stream context and set context options like certificate file
 	 *
-	 * @return IosPushNotificationTransport
+	 * @return PNIosTransport
 	 */
 	protected function _createContext() {
 		if (is_resource($this->_streamContext)) {
@@ -120,7 +131,7 @@ class IosPushNotificationTransport extends APushNotificationTransport {
 	/**
 	 * Create socket client
 	 *
-	 * @return IosPushNotificationTransport
+	 * @return PNIosTransport
 	 *
 	 * @throws CException
 	 */
