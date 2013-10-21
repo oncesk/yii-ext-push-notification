@@ -6,7 +6,7 @@
  * Time: 2:53 PM
  * To change this template use File | Settings | File Templates.
  */
-class PushNotificationManager extends CApplicationComponent {
+class PushNotification extends CApplicationComponent {
 
 	public function init() {
 		parent::init();
