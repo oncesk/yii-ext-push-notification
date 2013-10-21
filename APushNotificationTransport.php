@@ -21,6 +21,13 @@ abstract class APushNotificationTransport {
 	abstract public function send($payload);
 
 	/**
+	 * @param null $message
+	 *
+	 * @return APushNotificationPayload
+	 */
+	abstract public function createPayload($message = null);
+
+	/**
 	 * @param string $url
 	 *
 	 * @return APushNotificationTransport

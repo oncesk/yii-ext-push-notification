@@ -49,6 +49,16 @@ class AndroidPushNotificationTransport extends APushNotificationTransport {
 		}
 	}
 
+	/**
+	 * @param null $message
+	 *
+	 * @return PushNotificationAndroidPayload
+	 */
+	public function createPayload($message = null) {
+		return new PushNotificationAndroidPayload($message);
+	}
+
+
 	protected function _sendPackage($payload) {
 		$headers = array(
 			'Authorization: key=' . $this->_apiKey,

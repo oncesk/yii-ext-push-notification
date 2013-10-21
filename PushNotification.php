@@ -8,6 +8,9 @@
  */
 class PushNotification extends CApplicationComponent {
 
+	const TRANSPORT_TYPE_IOS = 'ios';
+	const TRANSPORT_TYPE_ANDROID = 'android';
+
 	public function init() {
 		parent::init();
 	}

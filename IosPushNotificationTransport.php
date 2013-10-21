@@ -82,6 +82,16 @@ class IosPushNotificationTransport extends APushNotificationTransport {
 	}
 
 	/**
+	 * @param null $message
+	 *
+	 * @return PushNotificationIosPayload
+	 */
+	public function createPayload($message = null) {
+		return new PushNotificationIosPayload($message);
+	}
+
+
+	/**
 	 * Close connection
 	 */
 	public function close() {
